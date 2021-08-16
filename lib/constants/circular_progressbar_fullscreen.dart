@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class CircularProgressbarFullscreen extends StatelessWidget {
   final String title;
   const CircularProgressbarFullscreen({
-    required Key key,
-    required this.title,
+    Key key,
+    this.title,
   }) : super(key: key);
 
   @override

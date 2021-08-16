@@ -1,9 +1,25 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:services/api_service.dart';
 import 'package:untitled1/models/current_address_module.dart';
 
-class RestarentListProvider extends ChangeNotifier {
-  static Future<CurrentAddressModule> restarentListData() async {
+class CurrentLocationtProvider extends ChangeNotifier {
+  // LatLng currentPostion;
+
+  void init() async {
+    await currentAddressData();
+  }
+
+  // void _getUserLocation() async {
+  //   var position = await GeolocatorPlatform.instance
+  //       .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  //
+  //   // setState(() {
+  //   currentPostion = LatLng(position.latitude, position.longitude);
+  //   //  });
+  // }
+
+  static Future<CurrentAddressModule> currentAddressData() async {
     CurrentAddressModule data = CurrentAddressModule();
     String msg = '';
 

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:errors/errors.dart';
 import 'package:http/http.dart' as http;
@@ -53,16 +52,12 @@ class APIService {
   }
 
   static Future<Map<String, dynamic>> postEndpointData(String endpoint,
-      {Map<String, dynamic> body, Headers headers}) async {
+      {Map<String, dynamic> body, Map<String, String> headers}) async {
     print("Posting data for Endpoint $endpoint");
     print("Body ${jsonEncode(body)}");
     var url = Uri.parse(endpoint);
 
-    final response = await http
-        .post(url,
-            headers: {"Content-Type": 'application/json; charset=UTF-8'},
-            body: jsonEncode(body) ?? "")
-        .catchError((error) {
+    final response = await http.get(url, headers: headers).catchError((error) {
       throw Error(message: NO_INTERNET);
     });
 
