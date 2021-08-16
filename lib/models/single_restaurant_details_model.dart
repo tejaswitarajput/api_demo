@@ -1,17 +1,17 @@
 // To parse this JSON data, do
 //
-//     final restaurantsListModule = restaurantsListModuleFromJson(jsonString);
+//     final singleRestaurantDetailtModule = singleRestaurantDetailtModuleFromJson(jsonString);
 
 import 'dart:convert';
 
-RestaurantsListModule restaurantsListModuleFromJson(String str) =>
-    RestaurantsListModule.fromJson(json.decode(str));
+SingleRestaurantDetailtModel singleRestaurantDetailtModelFromJson(String str) =>
+    SingleRestaurantDetailtModel.fromJson(json.decode(str));
 
-String restaurantsListModuleToJson(RestaurantsListModule data) =>
+String singleRestaurantDetailtModelToJson(SingleRestaurantDetailtModel data) =>
     json.encode(data.toJson());
 
-class RestaurantsListModule {
-  RestaurantsListModule({
+class SingleRestaurantDetailtModel {
+  SingleRestaurantDetailtModel({
     this.allRestaurantDishes,
     this.imageAdvertisement,
     this.suggestedImages,
@@ -29,8 +29,8 @@ class RestaurantsListModule {
   dynamic message;
   NoOfRestaurants noOfRestaurants;
 
-  factory RestaurantsListModule.fromJson(Map<String, dynamic> json) =>
-      RestaurantsListModule(
+  factory SingleRestaurantDetailtModel.fromJson(Map<String, dynamic> json) =>
+      SingleRestaurantDetailtModel(
         allRestaurantDishes: List<AllRestaurantDish>.from(
             json["AllRestaurantDishes"]
                 .map((x) => AllRestaurantDish.fromJson(x))),
@@ -91,7 +91,7 @@ class AllRestaurantDish {
   int restaurantDishId;
   String restaurantDishName;
   String locationName;
-  String restaurantCity;
+  RestaurantCity restaurantCity;
   double distance;
   int votes;
   int dishRank;
@@ -116,7 +116,7 @@ class AllRestaurantDish {
         restaurantDishId: json["RestaurantDishId"],
         restaurantDishName: json["RestaurantDishName"],
         locationName: json["LocationName"],
-        restaurantCity: json["restaurantCity"],
+        restaurantCity: json["RestaurantCity"],
         distance: json["Distance"].toDouble(),
         votes: json["Votes"],
         dishRank: json["DishRank"],
@@ -160,6 +160,8 @@ class AllRestaurantDish {
         "ChainOfRest": chainOfRest,
       };
 }
+
+enum RestaurantCity { NAVI_MUMBAI }
 
 class ImageAdvertisement {
   ImageAdvertisement({

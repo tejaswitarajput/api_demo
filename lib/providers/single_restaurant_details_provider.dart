@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:services/api_service.dart';
-import 'package:untitled1/models/restarent_list_module.dart';
+import 'package:untitled1/models/single_restaurant_details_model.dart';
 
 class RestaurantListProvider extends ChangeNotifier {
-  static Future<RestaurantsListModule> restaurantListData() async {
-    RestaurantsListModule data = RestaurantsListModule();
+  static Future<SingleRestaurantDetailtModel> singleRestaurantData() async {
+    SingleRestaurantDetailtModel data = SingleRestaurantDetailtModel();
 
     String url =
-        "http://fmtest.dishco.com/shawmanservices/api/RestaurantDetailsByFilter/GetFunPubRestaurantDetailsByFilter?StrLocLatitude=19.1105765&StrLocLongitude=73.0174654&StrLocCityName=Navi Mumbai&IntLocOrderby=1&IntLocNoOfRecords=0";
+        "http://fmtest.dishco.com/shawmanservices/api/SingleRestaurantDetails/GetFuncPubGetSingleRestaurantDetails?IntLocRestaurantId=636735&StrLocLatitude=19.0641022&StrLocLongitude=72.9967391";
 
     Map<String, String> requestHeaders = {
       "Content-Type": 'application/json; charset=UTF-8',
@@ -21,7 +21,7 @@ class RestaurantListProvider extends ChangeNotifier {
     print(responseData);
 
     try {
-      data = RestaurantsListModule.fromJson(responseData);
+      data = SingleRestaurantDetailtModel.fromJson(responseData);
       print("data$data");
     } catch (e) {
       print(e);
