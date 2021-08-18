@@ -5,7 +5,7 @@ import 'package:untitled1/models/single_restaurant_details_model.dart';
 class SingleRestaurantProvider extends ChangeNotifier {
   SingleRestaurantDetailtModel singleDetails = SingleRestaurantDetailtModel();
 
-   Future<SingleRestaurantDetailtModel> singleRestaurantData() async {
+  Future<SingleRestaurantDetailtModel> singleRestaurantData() async {
     SingleRestaurantDetailtModel data = SingleRestaurantDetailtModel();
 
     String url =
@@ -24,8 +24,10 @@ class SingleRestaurantProvider extends ChangeNotifier {
 
     try {
       data = SingleRestaurantDetailtModel.fromJson(responseData);
-      print("data$data");
+      print("dataSinfle$data");
       singleDetails = data;
+      notifyListeners();
+      print("dataSinfle$singleDetails");
     } catch (e) {
       print(e);
     }

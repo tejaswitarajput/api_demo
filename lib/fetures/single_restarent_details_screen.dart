@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:untitled1/models/restarent_list_module.dart';
 import 'package:untitled1/models/single_restaurant_details_model.dart';
 import 'package:untitled1/providers/single_restaurant_details_provider.dart';
 import 'package:untitled1/widgets/square_icon_button_widget.dart';
@@ -86,7 +87,9 @@ class _SingleRestarentDetailScreenState
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    "",
+                                                    kycHomeProv.singleDetails
+                                                        .restaurantName
+                                                        .toString(),
                                                     style:
                                                         TextStyle(fontSize: 20),
                                                   ),
@@ -103,8 +106,9 @@ class _SingleRestarentDetailScreenState
                                                                     Colors.red,
                                                                 size: 15)),
                                                         TextSpan(
-                                                            text:
-                                                                "{widget.productData['rest']}",
+                                                            text: kycHomeProv
+                                                                .singleDetails
+                                                                .location,
                                                             style: TextStyle(
                                                                 fontSize: 14,
                                                                 color: Colors
@@ -112,26 +116,27 @@ class _SingleRestarentDetailScreenState
                                                       ])),
                                                 ],
                                               ),
-                                              RichText(
-                                                  textAlign: TextAlign.right,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  text: TextSpan(children: [
-                                                    TextSpan(
-                                                        text: "\$",
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.orange)),
-                                                    TextSpan(
-                                                        text:
-                                                            "{widget.productData['price']}",
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color:
-                                                                Colors.orange))
-                                                  ])),
                                             ]),
                                         addVerticalSpace(20),
+                                        RichText(
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.ellipsis,
+                                            text: TextSpan(children: [
+                                              TextSpan(
+                                                  text: kycHomeProv
+                                                      .singleDetails
+                                                      .openingsHours,
+                                                  style: TextStyle(
+                                                      color: Colors.orange)),
+                                              TextSpan(
+                                                  text: kycHomeProv
+                                                      .singleDetails
+                                                      .contactNumber
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.orange))
+                                            ])),
                                         Divider(),
                                         Container(
                                             margin: const EdgeInsets.symmetric(
@@ -152,9 +157,13 @@ class _SingleRestarentDetailScreenState
                                                                     .orange,
                                                                 size: 15)),
                                                         TextSpan(
-                                                            text:
-                                                                "{widget.productData['rating']}",
+                                                            text: kycHomeProv
+                                                                .singleDetails
+                                                                .rating
+                                                                .toString(),
                                                             style: TextStyle(
+                                                                color: Colors
+                                                                    .black45,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold))
@@ -171,8 +180,13 @@ class _SingleRestarentDetailScreenState
                                                                     Colors.red,
                                                                 size: 15)),
                                                         TextSpan(
-                                                            text: " 18 Mins",
+                                                            text: kycHomeProv
+                                                                .singleDetails
+                                                                .distance
+                                                                .toString(),
                                                             style: TextStyle(
+                                                                color: Colors
+                                                                    .black45,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold))
@@ -183,14 +197,18 @@ class _SingleRestarentDetailScreenState
                                                       text: TextSpan(children: [
                                                         WidgetSpan(
                                                             child: Icon(
-                                                                Icons
-                                                                    .location_on,
+                                                                Icons.thumb_up,
                                                                 color: Colors
                                                                     .green,
                                                                 size: 15)),
                                                         TextSpan(
-                                                            text: "2.3 KM",
+                                                            text: kycHomeProv
+                                                                .singleDetails
+                                                                .votes
+                                                                .toString(),
                                                             style: TextStyle(
+                                                                color: Colors
+                                                                    .black45,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold))
@@ -203,11 +221,68 @@ class _SingleRestarentDetailScreenState
                                         ),
                                         addVerticalSpace(10),
                                         Text(
-                                          "A pizza that decidedly staggers under an overload of golden corn, exotic black olives, crunchy onions, crisp capsicum, succulent mushrooms, juicyfresh tomatoes and jalapeno - with extra cheese to go all around. A pizza that goes ballistic on veggies! Check out this mouth watering overload of crunchy, crisp capsicum, succulent mushrooms and fresh tomatoes",
+                                          kycHomeProv
+                                              .singleDetails.restaurantAddress
+                                              .toString(),
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
                                         addVerticalSpace(100),
+
+                                        // FutureBuilder<RestaurantsListModule>(
+                                        //     future: kycHomeProv.restaurantListData(),
+                                        //     // a previously-obtained Future<String> or null
+                                        //     builder: (BuildContext context,
+                                        //         AsyncSnapshot<RestaurantsListModule>
+                                        //         snapshot) {
+                                        //       return (snapshot.hasData)
+                                        //           ? Container(
+                                        //         child: Padding(
+                                        //           padding: EdgeInsets.all(8),
+                                        //           child: ListView.builder(
+                                        //             itemCount: kycHomeProv
+                                        //                 .restarentList.length,
+                                        //             primary: false,
+                                        //             shrinkWrap: true,
+                                        //             itemBuilder:
+                                        //                 (BuildContext context,
+                                        //                 int i) {
+                                        //               return InkWell(
+                                        //                 onTap: () {
+                                        //                   Navigator.pushNamed(
+                                        //                     context,
+                                        //                     RouterConstants
+                                        //                         .SingleRestarentDetails,
+                                        //                   );
+                                        //                 },
+                                        //                 child: ListViewWidget(
+                                        //                   name: kycHomeProv
+                                        //                       .restarentList[i]
+                                        //                       .restaurantName,
+                                        //                   details: kycHomeProv
+                                        //                       .restarentList[i]
+                                        //                       .cuisines,
+                                        //                   address: kycHomeProv
+                                        //                       .restarentList[i]
+                                        //                       .locationName
+                                        //                       .toString(),
+                                        //                   city: kycHomeProv
+                                        //                       .restarentList[i]
+                                        //                       .restaurantCity,
+                                        //                   distance: kycHomeProv
+                                        //                       .restarentList[i]
+                                        //                       .distance
+                                        //                       .toString(),
+                                        //                 ),
+                                        //               );
+                                        //             },
+                                        //           ),
+                                        //         ),
+                                        //       )
+                                        //           : Center(
+                                        //         child: CircularProgressIndicator(),
+                                        //       );
+                                        //     }),
                                       ])),
                               Positioned(
                                 top: -35,

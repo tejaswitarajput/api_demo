@@ -135,7 +135,7 @@ class SingleRestaurantDetailtModel {
   String restaurantLogo;
   int avgMealRate;
   int botRestaurantId;
-  int distance;
+  double distance;
   String latitude;
   String longitude;
   int totalPledge;
@@ -199,8 +199,8 @@ class SingleRestaurantDetailtModel {
   int isFreeFlowModifier;
   int homeDeliveryDistRange;
   String googleApiKey;
-  int avgWineCost;
-  int avgBeerCost;
+  double avgWineCost;
+  double avgBeerCost;
   dynamic shareText;
   String morningFromTime;
   String morningToTime;
