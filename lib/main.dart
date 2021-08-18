@@ -3,10 +3,12 @@ import 'package:provider/provider.dart';
 import 'package:untitled1/fetures/current_location_screen.dart';
 import 'package:untitled1/providers/current_location_provider.dart';
 import 'package:untitled1/providers/restarent_list_provider.dart';
+import 'package:untitled1/providers/single_restaurant_details_provider.dart';
 import 'constants/route_generator.dart' as router;
 import 'constants/palette.dart';
 import 'constants/router_constant.dart';
 import 'fetures/restarent_list_screen.dart';
+import 'fetures/single_restarent_details_screen.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,11 +22,12 @@ class App extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => CurrentLocationtProvider()),
         ChangeNotifierProvider(create: (context) => RestaurantListProvider()),
+        ChangeNotifierProvider(create: (context) => SingleRestaurantProvider()),
       ],
       child: MaterialApp(
         color: Palette.primary,
         debugShowCheckedModeBanner: false,
-        home: RestarentListScreen(),
+        home: SingleRestarentDetailScreen(),
         onGenerateRoute: router.generateRoute,
         initialRoute: RouterConstants.MainRoute,
       ),

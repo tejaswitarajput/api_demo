@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled1/constants/router_constant.dart';
@@ -19,8 +18,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
           settings: settings, builder: (context) => RestarentListScreen());
 
-    case RouterConstants.CreateEmployeeScreenRoute:
-    //  arguments = settings.arguments as EmployeeArgument;
+    case RouterConstants.SingleRestarentDetails:
+      //  arguments = settings.arguments as EmployeeArgument;
       return MaterialPageRoute(
         settings: settings,
         builder: (context) => SingleRestarentDetailScreen(),

@@ -32,6 +32,7 @@ dependencies:
   geolocator: ^7.1.1
   flutter_rating_bar: ^4.0.0
   font_awesome_flutter: ^9.1.0
+  slide_to_act: ^2.0.1
 
 
   services:

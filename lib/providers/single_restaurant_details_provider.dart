@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:services/api_service.dart';
 import 'package:untitled1/models/single_restaurant_details_model.dart';
 
-class RestaurantListProvider extends ChangeNotifier {
-  static Future<SingleRestaurantDetailtModel> singleRestaurantData() async {
+class SingleRestaurantProvider extends ChangeNotifier {
+  SingleRestaurantDetailtModel singleDetails = SingleRestaurantDetailtModel();
+
+   Future<SingleRestaurantDetailtModel> singleRestaurantData() async {
     SingleRestaurantDetailtModel data = SingleRestaurantDetailtModel();
 
     String url =
@@ -23,6 +25,7 @@ class RestaurantListProvider extends ChangeNotifier {
     try {
       data = SingleRestaurantDetailtModel.fromJson(responseData);
       print("data$data");
+      singleDetails = data;
     } catch (e) {
       print(e);
     }

@@ -140,24 +140,33 @@ class _RestarentListScreenState extends State<RestarentListScreen> {
                                                 itemBuilder:
                                                     (BuildContext context,
                                                         int i) {
-                                                  return ListViewWidget(
-                                                    name: kycHomeProv
-                                                        .restarentList[i]
-                                                        .restaurantName,
-                                                    details: kycHomeProv
-                                                        .restarentList[i]
-                                                        .cuisines,
-                                                    address: kycHomeProv
-                                                        .restarentList[i]
-                                                        .locationName
-                                                        .toString(),
-                                                    city: kycHomeProv
-                                                        .restarentList[i]
-                                                        .restaurantCity,
-                                                    distance: kycHomeProv
-                                                        .restarentList[i]
-                                                        .distance
-                                                        .toString(),
+                                                  return InkWell(
+                                                    onTap: () {
+                                                      Navigator.pushNamed(
+                                                        context,
+                                                        RouterConstants
+                                                            .SingleRestarentDetails,
+                                                      );
+                                                    },
+                                                    child: ListViewWidget(
+                                                      name: kycHomeProv
+                                                          .restarentList[i]
+                                                          .restaurantName,
+                                                      details: kycHomeProv
+                                                          .restarentList[i]
+                                                          .cuisines,
+                                                      address: kycHomeProv
+                                                          .restarentList[i]
+                                                          .locationName
+                                                          .toString(),
+                                                      city: kycHomeProv
+                                                          .restarentList[i]
+                                                          .restaurantCity,
+                                                      distance: kycHomeProv
+                                                          .restarentList[i]
+                                                          .distance
+                                                          .toString(),
+                                                    ),
                                                   );
                                                 },
                                               ),
@@ -266,6 +275,7 @@ class ListViewWidget extends StatelessWidget {
   final String price;
   final String distance;
   final String city;
+  final Function onPress;
 
   const ListViewWidget(
       {Key key,
@@ -275,7 +285,8 @@ class ListViewWidget extends StatelessWidget {
       this.address,
       this.price,
       this.distance,
-      this.city})
+      this.city,
+      this.onPress})
       : super(key: key);
 
   @override
