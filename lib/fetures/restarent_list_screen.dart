@@ -5,253 +5,296 @@ import 'package:untitled1/constants/circular_progressbar_fullscreen.dart';
 import 'package:untitled1/constants/palette.dart';
 import 'package:untitled1/constants/router_constant.dart';
 import 'package:untitled1/constants/show_alert_dialog.dart';
+import 'package:untitled1/models/current_address_module.dart';
 import 'package:untitled1/providers/current_location_provider.dart';
+import 'package:untitled1/providers/restarent_list_provider.dart';
+
+var bannerItems = ["Burger", "Noodles", "Pizza"];
+var bannerImage = [
+  'assets/images/hotel_2.png',
+  'assets/images/hotel_3.png',
+  'assets/images/hotel_4.png',
+];
 
 class RestarentListScreen extends StatefulWidget {
   const RestarentListScreen({Key key}) : super(key: key);
+
   @override
   _RestarentListScreenState createState() => _RestarentListScreenState();
 }
 
 class _RestarentListScreenState extends State<RestarentListScreen> {
+  CurrentAddressModule address = CurrentAddressModule();
+
+  @override
+  void initState() {
+    var currentProvider =
+        Provider.of<RestaurantListProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      address = await RestaurantListProvider().currentAddressData();
+
+// executes after build
+    });
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<CurrentLocationtProvider>(
-        builder: (context, kycHomeProv, child) {
-      return SafeArea(
-        child: Scaffold(
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
+    var screenHeight = MediaQuery.of(context).size.height;
+    var screenWidth = MediaQuery.of(context).size.width;
 
-            //  FlagsRepository.getFlagsForKey()
-            // backgroundColor: Colors.white70,
-            appBar: AppBar(
-              title: Text("KYC"),
-              centerTitle: true,
-            ),
-            body: Stack(
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      // Expanded(child: buildList(kycHomeProv)),
-                      // addMargin == true
-                      //     ? Container(
-                      //         height: 80,
-                      //       )
-                      //     : Container(),
-                    ],
-                  ),
-                ),
-                // Positioned(
-                //   child: loading
-                //       ? CircularProgressbarFullscreen(
-                //           title: loadingMessage,
-                //           key: null,
-                //         )
-                //       : Container(),
-                // ),
-              ],
-            )),
+    return Consumer<RestaurantListProvider>(
+        builder: (context, kycHomeProv, child) {
+      //  kycHomeProv.currentAddressData();
+      //  kycHomeProv.restaurantListData();
+      return Scaffold(
+        body: FutureBuilder<CurrentAddressModule>(
+            future: kycHomeProv
+                .currentAddressData(), // a previously-obtained Future<String> or null
+            builder: (BuildContext context,
+                AsyncSnapshot<CurrentAddressModule> snapshot) {
+              return (snapshot.hasData)
+                  ? Container(
+                      height: screenHeight,
+                      width: screenWidth,
+                      child: SafeArea(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 5, 5, 5),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(Icons.menu)),
+                                      Text(
+                                        "Foodies",
+                                        style: TextStyle(fontSize: 25),
+                                      ),
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(Icons.person)),
+                                    ],
+                                  )),
+                              Container(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Palette.grey,
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(10.0),
+                                        ),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              offset: const Offset(0, 2),
+                                              blurRadius: 8.0),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 16,
+                                            right: 16,
+                                            top: 4,
+                                            bottom: 4),
+                                        child: Text(
+                                          kycHomeProv.address.cityName,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Text(kycHomeProv.address.fullAddress
+                                        .toString()),
+                                    Text(kycHomeProv.address.countryName
+                                        .toString()),
+                                  ],
+                                ),
+                              ),
+                              BannerWidgetArea(),
+                              Container(
+                                child: Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: ListView.builder(
+                                    itemCount: kycHomeProv.restarentList.length,
+                                    primary: false,
+                                    shrinkWrap: true,
+                                    itemBuilder: (BuildContext context, int i) {
+                                      return ListViewWidget(
+                                        name: kycHomeProv.restarentList[i]
+                                            .restaurantDishName,
+                                        details: kycHomeProv
+                                            .restarentList[i].restaurantName,
+                                        timing: kycHomeProv
+                                            .restarentList[i].dishType
+                                            .toString(),
+                                        rating: kycHomeProv
+                                            .restarentList[i].restaurantCity,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  : Center(
+                      child: CircularProgressIndicator(),
+                    );
+            }),
       );
     });
   }
+}
 
-//   Widget buildList(RestarentListProvider restarentProv) {
-//     return Card(
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(20.0),
-//       ),
-//       elevation: 5,
-//       child: restarentProv.filteredDoctors.length == 0
-//           ? Container(child: Center(child: Text("No data")))
-//           : Container(
-//               decoration: BoxDecoration(
-//                   // color: Palette.primary,
-//                   borderRadius: BorderRadius.all(Radius.circular(20))),
-//               child: StreamBuilder<Object>(
-//                   stream: null,
-//                   builder: (context, snapshot) {
-//                     return Column(
-//                       children: [
-//                         header(),
-//                         Expanded(
-//                           child: Column(
-//                             children: [
-//                               Expanded(
-//                                 child: ListView.builder(
-//                                     controller: _scrollController,
-//                                     itemCount:
-//                                         restarentProv.filteredDoctors.length,
-//                                     itemBuilder:
-//                                         (BuildContext context, int index) {
-//                                       return GestureDetector(
-//                                         onTap: () {
-//                                           Navigator.pushNamed(context,
-//                                                   RouterConstants.KycParent,
-//                                                   arguments: KycArguments(
-//                                                       doctor: kycHomeProv
-//                                                               .filteredDoctors[
-//                                                           index]))
-//                                               .then(onGoBack);
-//                                         },
-//                                         child: Container(
-//                                           height: 50,
-//                                           color: index.isEven
-//                                               ? Palette.even
-//                                               : Palette.odd,
-//                                           child: Padding(
-//                                             padding:
-//                                                 const EdgeInsets.only(left: 8),
-//                                             child: Row(
-//                                               children: [
-//                                                 Container(
-//                                                   width: MediaQuery.of(context)
-//                                                           .size
-//                                                           .width /
-//                                                       4,
-//                                                   child: Text(
-//                                                     restarentProv
-//                                                                 .filteredDoctors[
-//                                                                     index]
-//                                                                 .newDoctor ==
-//                                                             false
-//                                                         ? restarentProv
-//                                                                 .filteredDoctors[
-//                                                                     index]
-//                                                                 .doctorFullname +
-//                                                             "(${restarentProv.filteredDoctors[index].category})"
-//                                                         : restarentProv
-//                                                                 .filteredDoctors[
-//                                                                     index]
-//                                                                 .contactFirstName +
-//                                                             " " +
-//                                                             restarentProv
-//                                                                 .filteredDoctors[
-//                                                                     index]
-//                                                                 .contactLastName,
-//                                                     style: TextStyle(
-//                                                         color: Palette.primary,
-//                                                         fontSize: FontsConstants
-//                                                             .listTiles,
-//                                                         fontWeight:
-//                                                             FontWeight.w700),
-//                                                   ),
-//                                                 ),
-//                                                 SizedBox(width: 10),
-//                                                 Container(
-//                                                   width: MediaQuery.of(context)
-//                                                           .size
-//                                                           .width /
-//                                                       5.5,
-//                                                   child: Text(
-//                                                     restarentProv
-//                                                         .filteredDoctors[index]
-//                                                         .patchName,
-//                                                     style: TextStyle(
-//                                                         color: Palette.primary,
-//                                                         // fontSize: FontsConstants
-//                                                         //     .listTiles,
-//                                                         fontWeight:
-//                                                             FontWeight.w700),
-//                                                   ),
-//                                                 ),
-//                                                 SizedBox(width: 5),
-//                                                 Container(
-//                                                   width: MediaQuery.of(context)
-//                                                           .size
-//                                                           .width /
-//                                                       6,
-//                                                   child: Text(
-//                                                     restarentProv
-//                                                         .filteredDoctors[index]
-//                                                         .clinicalCityName,
-//                                                     style: TextStyle(
-//                                                         color: Palette.primary,
-//                                                         // fontSize: FontsConstants
-//                                                         //     .listTiles,
-//                                                         fontWeight:
-//                                                             FontWeight.w700),
-//                                                   ),
-//                                                 ),
-//                                               ],
-//                                             ),
-//                                           ),
-//                                         ),
-//                                       );
-//                                     }),
-//                               ),
-//                               // addMargin == true
-//                               //     ? Container(
-//                               //         height: 80,
-//                               //       )
-//                               //     : Container(),
-//                             ],
-//                           ),
-//                         ),
-//                         // addMargin == true
-//                         //     ? Container(
-//                         //         height: 80,
-//                         //       )
-//                         //     : Container(),
-//                         Container(
-//                           decoration: BoxDecoration(
-//                               color: Palette.primary,
-//                               borderRadius: BorderRadius.only(
-//                                   bottomLeft: Radius.circular(20),
-//                                   bottomRight: Radius.circular(20))),
-//                           height: 40,
-//                         ),
-//                       ],
-//                     );
-//                   }),
-//             ),
-//     );
-//   }
-// }
+class BannerWidgetArea extends StatelessWidget {
+  const BannerWidgetArea({Key key}) : super(key: key);
 
-// Widget header() {
-//   return Container(
-//     height: 40,
-//     decoration: BoxDecoration(
-//         color: Palette.primary,
-//         borderRadius: BorderRadius.only(
-//             topLeft: Radius.circular(25), topRight: Radius.circular(25))),
-//     child: Padding(
-//       padding: const EdgeInsets.only(left: 10, right: 8, top: 8),
-//       child: Row(
-//         children: [
-//           Container(
-//             width: MediaQuery.of(context).size.width / 4,
-//             child: Text(
-//               "Doctor",
-//               style:
-//                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-//             ),
-//           ),
-//           SizedBox(width: 8),
-//           Container(
-//             width: MediaQuery.of(context).size.width / 5.5,
-//             child: Text(
-//               "Patch",
-//               style:
-//                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-//             ),
-//           ),
-//           SizedBox(width: 10),
-//           Container(
-//             width: MediaQuery.of(context).size.width / 6,
-//             child: Text(
-//               "City",
-//               style:
-//                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-//             ),
-//           )
-//         ],
-//       ),
-//     ),
-//   );
+  @override
+  Widget build(BuildContext context) {
+    var screenHeight = MediaQuery.of(context).size.height;
+    var screenWidth = MediaQuery.of(context).size.width;
+    PageController controller = PageController(initialPage: 1);
+    List<Widget> banners = new List<Widget>();
+    for (int x = 0; x < bannerItems.length; x++) {
+      var bannerView = Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Container(
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black38,
+                          offset: Offset(4.0, 4.0),
+                          blurRadius: 5.0,
+                          spreadRadius: 1.0),
+                    ]),
+              ),
+              ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  child: Image.asset(
+                    bannerImage[x],
+                    fit: BoxFit.cover,
+                  )),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.transparent, Colors.black])),
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      bannerItems[x],
+                      style: TextStyle(fontSize: 25.0, color: Colors.white),
+                    ),
+                    Text(
+                      "More then 40% off",
+                      style: TextStyle(fontSize: 12.0, color: Colors.white),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      banners.add(bannerView);
+    }
+    return Container(
+      width: screenWidth,
+      height: screenWidth * 9 / 16,
+      child: PageView(
+        controller: controller,
+        scrollDirection: Axis.horizontal,
+        children: banners,
+      ),
+    );
+  }
+}
+
+class ListViewWidget extends StatelessWidget {
+  final String name;
+  final String type;
+  final String details;
+  final String rating;
+  final String timing;
+  const ListViewWidget(
+      {Key key, this.name, this.type, this.details, this.rating, this.timing})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Padding(
+        padding: EdgeInsets.all(8),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black38, blurRadius: 5.0, spreadRadius: 1.0),
+            ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  child: Image.asset("assets/images/hotel_2.png",
+                      height: 80, width: 80, fit: BoxFit.cover),
+                ),
+                Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(name),
+                        Text(
+                          details,
+                          style:
+                              TextStyle(fontSize: 12.0, color: Colors.black45),
+                          maxLines: 1,
+                        ),
+                        Text(
+                          timing,
+                          style:
+                              TextStyle(fontSize: 12.0, color: Colors.black45),
+                          maxLines: 1,
+                        ),
+                      ],
+                    )),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
