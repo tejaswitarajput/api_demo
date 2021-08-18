@@ -6,6 +6,7 @@ import 'package:untitled1/constants/palette.dart';
 import 'package:untitled1/constants/router_constant.dart';
 import 'package:untitled1/constants/show_alert_dialog.dart';
 import 'package:untitled1/models/current_address_module.dart';
+import 'package:untitled1/models/restarent_list_module.dart';
 import 'package:untitled1/providers/current_location_provider.dart';
 import 'package:untitled1/providers/restarent_list_provider.dart';
 
@@ -50,8 +51,8 @@ class _RestarentListScreenState extends State<RestarentListScreen> {
       //  kycHomeProv.restaurantListData();
       return Scaffold(
         body: FutureBuilder<CurrentAddressModule>(
-            future: kycHomeProv
-                .currentAddressData(), // a previously-obtained Future<String> or null
+            future: kycHomeProv.currentAddressData(),
+            // a previously-obtained Future<String> or null
             builder: (BuildContext context,
                 AsyncSnapshot<CurrentAddressModule> snapshot) {
               return (snapshot.hasData)
@@ -121,29 +122,51 @@ class _RestarentListScreenState extends State<RestarentListScreen> {
                                 ),
                               ),
                               BannerWidgetArea(),
-                              Container(
-                                child: Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: ListView.builder(
-                                    itemCount: kycHomeProv.restarentList.length,
-                                    primary: false,
-                                    shrinkWrap: true,
-                                    itemBuilder: (BuildContext context, int i) {
-                                      return ListViewWidget(
-                                        name: kycHomeProv.restarentList[i]
-                                            .restaurantDishName,
-                                        details: kycHomeProv
-                                            .restarentList[i].restaurantName,
-                                        timing: kycHomeProv
-                                            .restarentList[i].dishType
-                                            .toString(),
-                                        rating: kycHomeProv
-                                            .restarentList[i].restaurantCity,
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
+                              FutureBuilder<RestaurantsListModule>(
+                                  future: kycHomeProv.restaurantListData(),
+                                  // a previously-obtained Future<String> or null
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<RestaurantsListModule>
+                                          snapshot) {
+                                    return (snapshot.hasData)
+                                        ? Container(
+                                            child: Padding(
+                                              padding: EdgeInsets.all(8),
+                                              child: ListView.builder(
+                                                itemCount: kycHomeProv
+                                                    .restarentList.length,
+                                                primary: false,
+                                                shrinkWrap: true,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int i) {
+                                                  return ListViewWidget(
+                                                    name: kycHomeProv
+                                                        .restarentList[i]
+                                                        .restaurantName,
+                                                    details: kycHomeProv
+                                                        .restarentList[i]
+                                                        .cuisines,
+                                                    address: kycHomeProv
+                                                        .restarentList[i]
+                                                        .locationName
+                                                        .toString(),
+                                                    city: kycHomeProv
+                                                        .restarentList[i]
+                                                        .restaurantCity,
+                                                    distance: kycHomeProv
+                                                        .restarentList[i]
+                                                        .distance
+                                                        .toString(),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          )
+                                        : Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                  }),
                             ],
                           ),
                         ),
@@ -239,10 +262,20 @@ class ListViewWidget extends StatelessWidget {
   final String name;
   final String type;
   final String details;
-  final String rating;
-  final String timing;
+  final String address;
+  final String price;
+  final String distance;
+  final String city;
+
   const ListViewWidget(
-      {Key key, this.name, this.type, this.details, this.rating, this.timing})
+      {Key key,
+      this.name,
+      this.type,
+      this.details,
+      this.address,
+      this.price,
+      this.distance,
+      this.city})
       : super(key: key);
 
   @override
@@ -263,6 +296,7 @@ class ListViewWidget extends StatelessWidget {
             padding: EdgeInsets.all(8.0),
             child: Row(
               mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
@@ -273,21 +307,51 @@ class ListViewWidget extends StatelessWidget {
                 Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(name),
+                        Text(
+                          name,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+
                         Text(
                           details,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
                           style:
                               TextStyle(fontSize: 12.0, color: Colors.black45),
-                          maxLines: 1,
+                        ),
+
+                        Text(
+                          address,
+                          overflow: TextOverflow.ellipsis,
+                          style:
+                              TextStyle(fontSize: 12.0, color: Colors.black45),
                         ),
                         Text(
-                          timing,
+                          "Distance:" + distance,
+                          overflow: TextOverflow.ellipsis,
                           style:
                               TextStyle(fontSize: 12.0, color: Colors.black45),
-                          maxLines: 1,
                         ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     Text(
+                        //       city,
+                        //       style: TextStyle(
+                        //           fontSize: 12.0, color: Colors.black45),
+                        //       maxLines: 1,
+                        //     ),
+                        //     Text(
+                        //       distance,
+                        //       style: TextStyle(
+                        //           fontSize: 12.0, color: Colors.black45),
+                        //       maxLines: 1,
+                        //     ),
+                        //   ],
+                        // )
                       ],
                     )),
               ],
