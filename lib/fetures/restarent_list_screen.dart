@@ -1,13 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:untitled1/constants/circular_progressbar_fullscreen.dart';
 import 'package:untitled1/constants/palette.dart';
 import 'package:untitled1/constants/router_constant.dart';
-import 'package:untitled1/constants/show_alert_dialog.dart';
 import 'package:untitled1/models/current_address_module.dart';
 import 'package:untitled1/models/restarent_list_module.dart';
-import 'package:untitled1/providers/current_location_provider.dart';
 import 'package:untitled1/providers/restarent_list_provider.dart';
 
 var bannerItems = ["Burger", "Noodles", "Pizza"];
