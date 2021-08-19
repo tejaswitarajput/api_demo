@@ -27,7 +27,7 @@ class App extends StatelessWidget {
       child: MaterialApp(
         color: Palette.primary,
         debugShowCheckedModeBanner: false,
-        home: SingleRestarentDetailScreen(),
+        home: RestarentListScreen(),
         onGenerateRoute: router.generateRoute,
         initialRoute: RouterConstants.MainRoute,
       ),
