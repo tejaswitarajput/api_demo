@@ -72,7 +72,7 @@ class _RestarentListScreenState extends State<RestarentListScreen> {
                                           onPressed: () {},
                                           icon: Icon(Icons.menu)),
                                       Text(
-                                        "Foodies",
+                                        "Restaurant List",
                                         style: TextStyle(fontSize: 25),
                                       ),
                                       IconButton(
