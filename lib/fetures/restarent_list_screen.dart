@@ -322,13 +322,14 @@ class ListViewWidget extends StatelessWidget {
                           name,
                           overflow: TextOverflow.ellipsis,
                         ),
-
-                        Text(
-                          details,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
-                          style:
-                              TextStyle(fontSize: 12.0, color: Colors.black45),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width - 150,
+                          child: Text(
+                            details,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontSize: 12.0, color: Colors.black45),
+                          ),
                         ),
 
                         Text(
